@@ -1,158 +1,169 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Malla Curricular - Tecnicatura Universitaria en Cosmetología, Cosmiatría y Estética</title>
-<style>
+  <meta charset="UTF-8">
+  <title>Malla Curricular Interactiva</title>
+  <style>
     body {
-        font-family: Arial, sans-serif;
-        background: #f8f9fa;
-        margin: 0;
-        padding: 20px;
+      font-family: "Times New Roman", Times, serif;
+      background: #fcfcfc;
+      margin: 0;
+      padding: 20px;
+      color: #333;
     }
     h1 {
-        text-align: center;
-        color: #444;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #222;
     }
     .grid {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
     .year {
-        background: white;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        width: 300px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      width: 250px;
     }
     .year h2 {
-        text-align: center;
-        color: #555;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 1.1em;
+      color: #444;
     }
     .subject {
-        background: #e9ecef;
-        margin: 5px 0;
-        padding: 10px;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
+      background: #eef1f3;
+      margin: 6px 0;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      font-size: 0.95em;
     }
     .subject.approved {
-        background: #a8e6a3;
-        text-decoration: line-through;
+      background: #c3e6cb;
+      text-decoration: line-through;
+      color: #555;
     }
     .subject.locked {
-        background: #ddd;
-        cursor: not-allowed;
+      background: #ddd;
+      cursor: not-allowed;
+      color: #888;
     }
     .tooltip {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #333;
-        color: #fff;
-        padding: 5px;
-        border-radius: 4px;
-        white-space: nowrap;
-        font-size: 12px;
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(50,50,50,0.9);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      font-size: 0.85em;
+      z-index: 10;
     }
     .subject.locked:hover .tooltip {
-        display: block;
+      display: block;
     }
-</style>
+  </style>
 </head>
 <body>
-<h1>Malla Curricular - Tecnicatura Universitaria en Cosmetología, Cosmiatría y Estética</h1>
-<div class="grid" id="grid"></div>
-<script>
-const subjects = [
-  // 1er año
-  {id:420,name:"QUÍMICA COSMÉTICA BÁSICA"},
-  {id:421,name:"ANATOMÍA Y FISIOLOGÍA"},
-  {id:423,name:"APARATOLOGÍA E INSTRUMENTAL ELEMENTAL"},
-  {id:424,name:"TÉCNICAS DE MAQUILLAJE BÁSICAS"},
-  {id:427,name:"DERMATOLOGÍA ELEMENTAL",req:[421]},
-  {id:428,name:"INFORMÁTICA BÁSICA"},
-  {id:429,name:"ESTÉTICA ELEMENTAL"},
-  {id:430,name:"MERCADOTECNIA"},
-  {id:425,name:"TRABAJOS DE SEMINARIOS EN COSMETOLOGÍA"},
-  {id:419,name:"TALLERES DE APLICACIÓN BÁSICA EN COSMETOLOGÍA"},
-  {id:422,name:"COSMETOLOGÍA"},
-  // 2do año
-  {id:433,name:"QUÍMICA COSMÉTICA APLICADA",req:[420]},
-  {id:434,name:"TÉCNICAS DE MAQUILLAJE ESPECÍFICAS",req:[424]},
-  {id:435,name:"APARATOLOGÍA E INSTRUMENTAL APLICADO",req:[423]},
-  {id:438,name:"ESTÉTICA SUPERIOR",req:[429]},
-  {id:439,name:"INFORMÁTICA APLICADA",req:[428]},
-  {id:440,name:"NUTRICIÓN",req:[427,429]},
-  {id:431,name:"COSMIATRÍA",req:[422,427]},
-  {id:432,name:"DERMATOLOGÍA SUPERIOR",req:[427]},
-  {id:441,name:"TRABAJOS DE SEMINARIOS EN COSMETOLOGÍA Y ESTÉTICA",req:[425]},
-  {id:442,name:"TALLERES DE APLICACIÓN EN COSMETOLOGÍA Y ESTÉTICA",req:[419]},
-];
+  <h1>Plan de Estudios – Tecnicatura en Cosmetología, Cosmiatría y Estética</h1>
+  <div class="grid" id="grid"></div>
 
-const years = {
-  "1er Año": [420,421,423,424,427,428,429,430,425,419,422],
-  "2do Año": [433,434,435,438,439,440,431,432,441,442]
-};
+  <script>
+    const subjects = [
+      // 1er Año – Primer cuatrimestre
+      {id:420,name:"QUÍMICA COSMÉTICA BÁSICA"},
+      {id:421,name:"ANATOMÍA Y FISIOLOGÍA"},
+      {id:423,name:"APARATOLOGÍA E INSTRUMENTAL ELEMENTAL"},
+      {id:424,name:"TÉCNICAS DE MAQUILLAJE BÁSICAS"},
+      // 1er Año – Segundo cuatrimestre
+      {id:427,name:"DERMATOLOGÍA ELEMENTAL", req:[421]},
+      {id:428,name:"INFORMÁTICA BÁSICA"},
+      {id:429,name:"ESTÉTICA ELEMENTAL"},
+      {id:430,name:"MERCADOTECNIA"},
+      // 1er Año – Anuales
+      {id:425,name:"TRABAJOS DE SEMINARIOS EN COSMETOLOGÍA"},
+      {id:419,name:"TALLERES DE APLICACIÓN BÁSICA EN COSMETOLOGÍA"},
+      {id:422,name:"COSMETOLOGÍA"},
+      // 2do Año – Primer cuatrimestre
+      {id:433,name:"QUÍMICA COSMÉTICA APLICADA", req:[420]},
+      {id:434,name:"TÉCNICAS DE MAQUILLAJE ESPECÍFICAS", req:[424]},
+      {id:435,name:"APARATOLOGÍA E INSTRUMENTAL APLICADO", req:[423]},
+      // 2do Año – Segundo cuatrimestre
+      {id:438,name:"ESTÉTICA SUPERIOR", req:[429]},
+      {id:439,name:"INFORMÁTICA APLICADA", req:[428]},
+      {id:440,name:"NUTRICIÓN", req:[427,429]},
+      // 2do Año – Anuales
+      {id:431,name:"COSMIATRÍA", req:[422,427]},
+      {id:432,name:"DERMATOLOGÍA SUPERIOR", req:[427]},
+      {id:441,name:"TRABAJOS DE SEMINARIOS EN COSMETOLOGÍA Y ESTÉTICA", req:[425]},
+      {id:442,name:"TALLERES DE APLICACIÓN EN COSMETOLOGÍA Y ESTÉTICA", req:[419]}
+    ];
 
-const approved = JSON.parse(localStorage.getItem("approvedSubjects")||"[]");
+    const years = {
+      "1° Año – Primer Cuatrimestre": [420,421,423,424],
+      "1° Año – Segundo Cuatrimestre": [427,428,429,430],
+      "1° Año – Anuales": [425,419,422],
+      "2° Año – Primer Cuatrimestre": [433,434,435],
+      "2° Año – Segundo Cuatrimestre": [438,439,440],
+      "2° Año – Anuales": [431,432,441,442]
+    };
 
-function saveProgress(){
-  localStorage.setItem("approvedSubjects",JSON.stringify(approved));
-}
+    const approved = JSON.parse(localStorage.getItem("approvedSubjects")||"[]");
 
-function isApproved(id){
-  return approved.includes(id);
-}
-
-function canUnlock(subj){
-  if(!subj.req) return true;
-  return subj.req.every(r=>approved.includes(r));
-}
-
-const grid=document.getElementById("grid");
-for(const [year,ids] of Object.entries(years)){
-  const col=document.createElement("div");
-  col.className="year";
-  col.innerHTML=`<h2>${year}</h2>`;
-
-  ids.forEach(id=>{
-    const subj=subjects.find(s=>s.id===id);
-    const div=document.createElement("div");
-    div.className="subject";
-    if(isApproved(id)) div.classList.add("approved");
-    if(!canUnlock(subj) && !isApproved(id)) div.classList.add("locked");
-    div.textContent=subj.name;
-
-    if(div.classList.contains("locked")){
-      const tooltip=document.createElement("div");
-      tooltip.className="tooltip";
-      tooltip.textContent="Requiere: "+subj.req.map(r=>subjects.find(s=>s.id===r).name).join(", ");
-      div.appendChild(tooltip);
+    function save(){ localStorage.setItem("approvedSubjects", JSON.stringify(approved)); }
+    function isApproved(id){ return approved.includes(id); }
+    function canUnlock(s){
+      if (!s.req) return true;
+      return s.req.every(r => approved.includes(r));
     }
 
-    div.addEventListener("click",()=>{
-      if(div.classList.contains("locked")) return;
-      if(isApproved(id)){
-        approved.splice(approved.indexOf(id),1);
-        div.classList.remove("approved");
-      } else {
-        approved.push(id);
-        div.classList.add("approved");
-      }
-      saveProgress();
-      location.reload();
-    });
+    const grid = document.getElementById("grid");
+    for (const [block, ids] of Object.entries(years)) {
+      const col = document.createElement("div");
+      col.className = "year";
+      col.innerHTML = `<h2>${block}</h2>`;
+      ids.forEach(id => {
+        const subj = subjects.find(s => s.id === id);
+        const div = document.createElement("div");
+        div.className = "subject";
+        div.textContent = subj.name;
 
-    col.appendChild(div);
-  });
+        if (isApproved(id)) div.classList.add("approved");
+        if (!isApproved(id) && !canUnlock(subj)) {
+          div.classList.add("locked");
+          const tip = document.createElement("div");
+          tip.className = "tooltip";
+          tip.textContent = "Requiere: " +
+            subj.req.map(r => subjects.find(s2 => s2.id === r).name).join(", ");
+          div.appendChild(tip);
+        }
 
-  grid.appendChild(col);
-}
-</script>
+        div.addEventListener("click", () => {
+          if (div.classList.contains("locked")) return;
+          if (isApproved(id)) {
+            approved.splice(approved.indexOf(id),1);
+            div.classList.remove("approved");
+          } else {
+            approved.push(id);
+            div.classList.add("approved");
+          }
+          save();
+          location.reload();
+        });
+
+        col.appendChild(div);
+      });
+      grid.appendChild(col);
+    }
+  </script>
 </body>
 </html>
