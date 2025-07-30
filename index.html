@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Malla Curricular - Tecnicatura Universitaria en Cosmetología, Cosmiatría y Estética</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f8f9fa;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+        color: #444;
+    }
+    .grid {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+    .year {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        width: 300px;
+    }
+    .year h2 {
+        text-align: center;
+        color: #555;
+    }
+    .subject {
+        background: #e9ecef;
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+    }
+    .subject.approved {
+        background: #a8e6a3;
+        text-decoration: line-through;
+    }
+    .subject.locked {
+        background: #ddd;
+        cursor: not-allowed;
+    }
+    .tooltip {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #333;
+        color: #fff;
+        padding: 5px;
+        border-radius: 4px;
+        white-space: nowrap;
+        font-size: 12px;
+    }
+    .subject.locked:hover .tooltip {
+        display: block;
+    }
+</style>
+</head>
+<body>
+<h1>Malla Curricular - Tecnicatura Universitaria en Cosmetología, Cosmiatría y Estética</h1>
+<div class="grid" id="grid"></div>
+<script>
+const subjects = [
+  // 1er año
+  {id:420,name:"QUÍMICA COSMÉTICA BÁSICA"},
+  {id:421,name:"ANATOMÍA Y FISIOLOGÍA"},
+  {id:423,name:"APARATOLOGÍA E INSTRUMENTAL ELEMENTAL"},
+  {id:424,name:"TÉCNICAS DE MAQUILLAJE BÁSICAS"},
+  {id:427,name:"DERMATOLOGÍA ELEMENTAL",req:[421]},
+  {id:428,name:"INFORMÁTICA BÁSICA"},
+  {id:429,name:"ESTÉTICA ELEMENTAL"},
+  {id:430,name:"MERCADOTECNIA"},
+  {id:425,name:"TRABAJOS DE SEMINARIOS EN COSMETOLOGÍA"},
+  {id:419,name:"TALLERES DE APLICACIÓN BÁSICA EN COSMETOLOGÍA"},
+  {id:422,name:"COSMETOLOGÍA"},
+  // 2do año
+  {id:433,name:"QUÍMICA COSMÉTICA APLICADA",req:[420]},
+  {id:434,name:"TÉCNICAS DE MAQUILLAJE ESPECÍFICAS",req:[424]},
+  {id:435,name:"APARATOLOGÍA E INSTRUMENTAL APLICADO",req:[423]},
+  {id:438,name:"ESTÉTICA SUPERIOR",req:[429]},
+  {id:439,name:"INFORMÁTICA APLICADA",req:[428]},
+  {id:440,name:"NUTRICIÓN",req:[427,429]},
+  {id:431,name:"COSMIATRÍA",req:[422,427]},
+  {id:432,name:"DERMATOLOGÍA SUPERIOR",req:[427]},
+  {id:441,name:"TRABAJOS DE SEMINARIOS EN COSMETOLOGÍA Y ESTÉTICA",req:[425]},
+  {id:442,name:"TALLERES DE APLICACIÓN EN COSMETOLOGÍA Y ESTÉTICA",req:[419]},
+];
+
+const years = {
+  "1er Año": [420,421,423,424,427,428,429,430,425,419,422],
+  "2do Año": [433,434,435,438,439,440,431,432,441,442]
+};
+
+const approved = JSON.parse(localStorage.getItem("approvedSubjects")||"[]");
+
+function saveProgress(){
+  localStorage.setItem("approvedSubjects",JSON.stringify(approved));
+}
+
+function isApproved(id){
+  return approved.includes(id);
+}
+
+function canUnlock(subj){
+  if(!subj.req) return true;
+  return subj.req.every(r=>approved.includes(r));
+}
+
+const grid=document.getElementById("grid");
+for(const [year,ids] of Object.entries(years)){
+  const col=document.createElement("div");
+  col.className="year";
+  col.innerHTML=`<h2>${year}</h2>`;
+
+  ids.forEach(id=>{
+    const subj=subjects.find(s=>s.id===id);
+    const div=document.createElement("div");
+    div.className="subject";
+    if(isApproved(id)) div.classList.add("approved");
+    if(!canUnlock(subj) && !isApproved(id)) div.classList.add("locked");
+    div.textContent=subj.name;
+
+    if(div.classList.contains("locked")){
+      const tooltip=document.createElement("div");
+      tooltip.className="tooltip";
+      tooltip.textContent="Requiere: "+subj.req.map(r=>subjects.find(s=>s.id===r).name).join(", ");
+      div.appendChild(tooltip);
+    }
+
+    div.addEventListener("click",()=>{
+      if(div.classList.contains("locked")) return;
+      if(isApproved(id)){
+        approved.splice(approved.indexOf(id),1);
+        div.classList.remove("approved");
+      } else {
+        approved.push(id);
+        div.classList.add("approved");
+      }
+      saveProgress();
+      location.reload();
+    });
+
+    col.appendChild(div);
+  });
+
+  grid.appendChild(col);
+}
+</script>
+</body>
+</html>
